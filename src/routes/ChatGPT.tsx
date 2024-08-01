@@ -7,6 +7,8 @@ import { useUser } from "@clerk/clerk-react";
 import '../style/gpt.css'
 import { useState } from "react";
 import gpt from '../assets/gpt.webp'
+import robot from '../assets/robot.jpg'
+import toast from "react-hot-toast";
 // import { useConversationStore } from "../stores/store";
 
 const ChatGPT = () => {
@@ -17,7 +19,7 @@ const ChatGPT = () => {
   const [text, setText] = useState<any>('')
 
   const user = useUser()
-  console.log(user.user?.username)
+  console.log(messages)
   const onClose = () => {
     navigate('/')
   }
@@ -28,7 +30,9 @@ const ChatGPT = () => {
         author: user.user?.firstName! || user.user?.username!,
         body: `@ai ${text}`
       })
+      setText('')
     } catch (error) {
+      toast.error('Wrong something')
       console.log(error)
     }
   }
@@ -47,7 +51,7 @@ const ChatGPT = () => {
       <div className="container">
         {messages?.map((elem) => (
           <div className={elem.author === "ChatGPT" ? "container_ai blue" : "container_ai green"}>
-            <img src={elem.author === "ChatGPT" ? gpt : user.user?.imageUrl} alt="gpt" />
+            <img src={elem.author === "ChatGPT" ? gpt : robot} alt="gpt" />
             <p>{elem.body}</p>
           </div>
 

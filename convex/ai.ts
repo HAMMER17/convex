@@ -1,12 +1,14 @@
 import { action } from "./_generated/server";
 import { api } from "./_generated/api";
 import { v } from "convex/values";
+// import OpenAI from "openai";
 
-const TOGETHER_API_KEY = process.env.TOGETHER_API_KEY!;
+const TOGETHER_API_KEY = process.env.OPENAI_API_KEY!;
+// const apiKey = process.env.OPENAI_API_KEY!;
+// const openai = new OpenAI({ apiKey });
 
 export const chat = action({
   args: {
-
     author: v.string(),
     messageBody: v.string(),
   },
@@ -21,14 +23,11 @@ export const chat = action({
         model: "meta-llama/Llama-3-8b-chat-hf",
         messages: [
           {
-            // Provide a 'system' message to add context about how to respond
-            // (feel free to change this to give your AI agent personality!)
             role: "system",
             content:
               "You are a terse bot in a group chat responding to questions with 1-sentence answers.",
           },
           {
-            // Pass on the chat user's message to the AI agent
             role: "user",
             content: args.messageBody,
           },
@@ -37,13 +36,12 @@ export const chat = action({
     });
 
     const json = await res.json();
-    // Pull the message content out of the response
     const messageContent = json.choices[0].message?.content;
 
-    // Send AI's response as a new message
     await ctx.runMutation(api.messages.send, {
       author: args.author,
       body: messageContent || "Sorry, I don't have an answer for that.",
     });
   },
 });
+
