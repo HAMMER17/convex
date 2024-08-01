@@ -1,6 +1,8 @@
+"use node";
 import { action } from "./_generated/server";
 import { api } from "./_generated/api";
 import { v } from "convex/values";
+
 // import OpenAI from "openai";
 
 const TOGETHER_API_KEY = process.env.OPENAI_API_KEY!;

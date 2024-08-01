@@ -92,12 +92,10 @@ export const sendImage = mutation({
 export const send = mutation({
   args: { body: v.string(), author: v.string() },
   handler: async (ctx, { body, author }) => {
-    // Send a new message.
+
     await ctx.db.insert("gpt", { body, author });
     if (body.startsWith("@ai")) {
-      // Schedule the chat action to run immediately
       await ctx.scheduler.runAfter(0, api.ai.chat, {
-
         messageBody: body,
         author: 'ChatGPT'
       });
@@ -109,8 +107,9 @@ export const list = query({
   args: {},
   handler: async (ctx) => {
     // Grab the most recent messages.
-    const messages = await ctx.db.query("gpt").order("desc").take(100);
+    const messages = await ctx.db.query("gpt").order("desc").take(10);
     // Reverse the list so that it's in a chronological order.
+
     return messages;
   },
 });
