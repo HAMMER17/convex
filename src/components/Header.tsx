@@ -11,12 +11,13 @@ import { useNavigate } from "react-router-dom";
 const Header = ({ onModal }: any) => {
   // const me = useQuery(api.users?.getMe)
   const user = useUser()
+  const { isSignedIn } = useUser()
   // const { setSelectedConversation }: any = useConversationStore()
-  // console.log(me?._id)
+
   const navigate = useNavigate()
 
-  const handleLink = () => {
-    // setSelectedConversation(me?._id)
+  const handleLink = async () => {
+    // await setSelectedConversation(me)
     navigate(`/chat/${user.user?.id}`)
   }
   return (
@@ -35,8 +36,8 @@ const Header = ({ onModal }: any) => {
         <UserButton />
       </SignedIn>
       <p>{user.user?.firstName || user.user?.username}</p>
-      <p onClick={() => handleLink()} style={{ cursor: 'pointer' }}>ChatGPT</p>
-      <FaUserPlus size={20} style={{ cursor: 'pointer' }} onClick={onModal} />
+      {isSignedIn === true ? <><p onClick={() => handleLink()} style={{ cursor: 'pointer', color: 'red' }}>ChatGPT</p>
+        <FaUserPlus size={20} style={{ cursor: 'pointer' }} onClick={onModal} /></> : null}
     </div>
   )
 }

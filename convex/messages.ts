@@ -47,23 +47,15 @@ export const getMessages = query({
     const userProfileCache = new Map();
     const messagesWithSender = await Promise.all(
       messages.map(async (message) => {
-        if (message.sender === "ChatGPT") {
-          const image = message.messageType === "text" ? "/gpt.png" : "dall-e.png";
-          return { ...message, sender: { name: "ChatGPT", image } };
-        }
-        let sender;
-        // Check if sender profile is in cache
-        if (userProfileCache.has(message.sender)) {
-          sender = userProfileCache.get(message.sender);
-        } else {
-          // Fetch sender profile from the database
-          sender = await ctx.db
-            .query("users")
-            .filter((q) => q.eq(q.field("_id"), message.sender))
-            .first();
-          // Cache the sender profile
-          userProfileCache.set(message.sender, sender);
-        }
+
+        // Fetch sender profile from the database
+        let sender = await ctx.db
+          .query("users")
+          .filter((q) => q.eq(q.field("_id"), message.sender))
+          .first();
+        // Cache the sender profile
+        userProfileCache.set(message.sender, sender);
+
 
         return { ...message, sender };
       })
@@ -99,7 +91,6 @@ export const send = mutation({
         messageBody: body,
         author: 'ChatGPT'
       });
-
     }
   },
 });
@@ -107,7 +98,7 @@ export const list = query({
   args: {},
   handler: async (ctx) => {
     // Grab the most recent messages.
-    const messages = await ctx.db.query("gpt").order("desc").take(10);
+    const messages = await ctx.db.query("gpt").order("desc").take(6);
     // Reverse the list so that it's in a chronological order.
 
     return messages;

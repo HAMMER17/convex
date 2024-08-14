@@ -1,7 +1,4 @@
 
-
-
-
 export function formatDate(date_ms: number) {
   // Convert milliseconds to seconds
   let date_seconds = date_ms / 1000;
@@ -59,13 +56,13 @@ export const getRelativeDateTime = (message: any, previousMessage: any) => {
   const lastWeek = new Date(today);
   lastWeek.setDate(lastWeek.getDate() - 7);
 
-  const messageDate = new Date(message);
+  const messageDate = new Date(message._creationTime);
 
   if (!previousMessage || !isSameDay(previousMessage._creationTime, messageDate.getTime())) {
     if (isSameDay(messageDate.getTime(), today.getTime())) {
-      return "Сегодня";
+      return "Today";
     } else if (isSameDay(messageDate.getTime(), yesterday.getTime())) {
-      return "Вчера";
+      return "Yesterday";
     } else if (messageDate.getTime() > lastWeek.getTime()) {
       const options: Intl.DateTimeFormatOptions = {
         weekday: "long",

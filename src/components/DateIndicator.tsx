@@ -1,14 +1,20 @@
 
 import { getRelativeDateTime, isSameDay } from '../lib/utils';
+import { IMessage } from '../stores/store';
 
-const DateIndicator = ({ message, previousMessage }: any) => {
 
+
+type DateIndicatorProps = {
+  message: IMessage;
+  previousMessage?: IMessage;
+};
+const DateIndicator = ({ message, previousMessage }: DateIndicatorProps) => {
   return (
     <>
-      {!previousMessage || isSameDay(previousMessage._creationTime, message._creationTime) ? (
-        <div className='chat_day'>
+      {!previousMessage || !isSameDay(previousMessage._creationTime, message._creationTime) ? (
+        <div className='data'>
           <p >
-            {getRelativeDateTime(message._creationTime, previousMessage._creationTime)}
+            {getRelativeDateTime(message, previousMessage)}
           </p>
         </div>
       ) : null}

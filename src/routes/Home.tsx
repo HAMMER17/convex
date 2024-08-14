@@ -3,17 +3,16 @@ import { api } from '../../convex/_generated/api'
 import { useConvexAuth } from "convex/react"
 import Header from "../components/Header"
 import User from "../components/User"
-import { useState } from "react";
+import React from "react";
 import Modal from "../components/Modal";
 
 
 const Home = () => {
 
-  const [mod, setMod] = useState(false)
+  const [mod, setMod] = React.useState(false)
   const { isAuthenticated } = useConvexAuth()
   const users = useQuery(api.conversations?.getMyConversation, isAuthenticated ? undefined : "skip")
 
-  // console.log(users)
 
   const onModal = () => {
     setMod(pre => !pre)

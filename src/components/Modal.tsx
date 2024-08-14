@@ -61,7 +61,7 @@ const Modal = ({ onCancel }: any) => {
       setSelectedUsers([]);
       setGroupName("");
       setSelectedImage(null);
-
+      onCancel()
       const conversationName = isGroup ? groupName : users?.find((user) => user._id === selectedUsers[0])?.name;
 
       setSelectedConversation({

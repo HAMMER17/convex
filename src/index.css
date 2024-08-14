@@ -31,6 +31,7 @@ html {
   flex-direction: column;
 
   width: 50%;
+
   background-color: rgba(0, 0, 0, 0.484);
   min-height: 100vh;
   /* border: 3px solid white; */
@@ -50,6 +51,7 @@ html {
 .home_container_none {
   display: none;
 }
+
 
 @media (max-width: 500px) {
   .home {

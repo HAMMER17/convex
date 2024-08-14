@@ -3,7 +3,7 @@
 import { useConversationStore } from '../stores/store'
 import '../style/chat.css'
 import { useNavigate } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import React from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import toast from 'react-hot-toast'
@@ -16,20 +16,19 @@ import { FaCamera } from 'react-icons/fa'
 import HomePage from '../pages/HomePage'
 import { IoClose } from 'react-icons/io5'
 import ChatModal from '../components/ImgModal'
+// import DateIndicator from '../components/DateIndicator'
 
 
 const Chats = () => {
   const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false)
-  const [text, setText] = useState('')
-  const [show, setShow] = useState(false)
-
-
+  const [text, setText] = React.useState('')
+  const [show, setShow] = React.useState(false)
 
   const setSendMessage = useMutation(api.messages?.setTextMessages)
   const me = useQuery(api.users?.getMe)
   const { selectedConversation, setSelectedConversation } = useConversationStore()
   const messages = useQuery(api.messages?.getMessages, {
-    conversation: selectedConversation!._id,
+    conversation: selectedConversation!?._id,
   });
 
   const navigate = useNavigate()
@@ -39,6 +38,7 @@ const Chats = () => {
   }
   const handleSendMessage = async (e: any) => {
     e.preventDefault()
+
     try {
       await setSendMessage({ conversation: selectedConversation!?._id, content: text, sender: me!?._id })
       setText('')
@@ -48,7 +48,7 @@ const Chats = () => {
     }
 
   }
-  useEffect(() => {
+  React.useEffect(() => {
 
     setTimeout(() => {
       window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
@@ -66,9 +66,9 @@ const Chats = () => {
         </div>
       </div >
       <div className='chat_container'>
-        {messages?.map((elem) => (
-
-          <HomePage me={me} elem={elem} key={elem._id} />
+        {messages?.map((elem, idx) => (
+          <HomePage me={me} elem={elem} key={elem._id}
+            previousMessage={idx > 0 ? messages[idx - 1] : undefined} />
 
         ))}
         {show && <ChatModal />}

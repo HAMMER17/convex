@@ -5,7 +5,7 @@ import { IoClose } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@clerk/clerk-react";
 import '../style/gpt.css'
-import { useState } from "react";
+import React from "react";
 import gpt from '../assets/gpt.webp'
 import robot from '../assets/robot.jpg'
 import toast from "react-hot-toast";
@@ -16,10 +16,10 @@ const ChatGPT = () => {
   const navigate = useNavigate()
   const messages = useQuery(api.messages?.list);
   const sendMessage = useMutation(api.messages?.send);
-  const [text, setText] = useState<any>('')
+  const [text, setText] = React.useState<any>('')
 
   const user = useUser()
-  console.log(messages)
+  // console.log(selectedConversation)
   const onClose = () => {
     navigate('/')
   }
@@ -50,7 +50,8 @@ const ChatGPT = () => {
       </div >
       <div className="container">
         {messages?.map((elem) => (
-          <div className={elem.author === "ChatGPT" ? "container_ai blue" : "container_ai green"}>
+          <div className={elem.author === "ChatGPT" ? "container_ai blue" : "container_ai green"}
+            key={elem._id}>
             <img src={elem.author === "ChatGPT" ? gpt : robot} alt="gpt" />
             <p>{elem.body}</p>
           </div>

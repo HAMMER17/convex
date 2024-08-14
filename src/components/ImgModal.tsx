@@ -16,6 +16,7 @@ const ChatModal = () => {
   const generateUploadUrl = useMutation(api.conversations.generateUploadUrl);
   const me = useQuery(api.users.getMe);
   console.log(isLoading)
+
   const handleImg = async () => {
     setIsLoading(true);
     try {
@@ -37,6 +38,7 @@ const ChatModal = () => {
       });
       setRenderedImage('')
       setIsImage(null);
+
     } catch (err) {
       toast.error("Failed to send image");
     } finally {

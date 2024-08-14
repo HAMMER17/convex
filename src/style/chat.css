@@ -38,6 +38,14 @@
   .chat_container {
     min-height: 100vh;
 
+    .data {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
     .chat_pic {
       width: 50%;
       object-fit: cover;
